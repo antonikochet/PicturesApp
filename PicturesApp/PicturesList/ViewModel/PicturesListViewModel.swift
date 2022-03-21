@@ -18,16 +18,14 @@ class PicturesListViewModel: PicturesListViewModelType {
         fetchPhotos()
     }
     
-    func getItem(by index: Int, viewModel: PicturesListCellViewModelType?) -> PicturesListCellViewModelType {
+    func getItem(by index: Int) -> PicturesListCellViewModelType {
         let photo = photos[index]
-        if let viewModel = viewModel as? PicturesListCellViewModel {
-            viewModel.set(photo)
-            return viewModel
-        } else {
-            let viewModel = PicturesListCellViewModel(networkManager: networkManager)
-            viewModel.set(photo)
-            return viewModel
+        let localViewModel = PicturesListCellModel(photographer: photo.photographer,
+                                                       description: photo.description)
+        localViewModel.startLoadImage = { [weak self] viewModel in
+            self?.downloadImage(viewModel: viewModel, urlString: photo.urlPhoto)
         }
+        return localViewModel
     }
     
     func getDetailItem(by index: Int) -> Photo {
@@ -68,16 +66,25 @@ class PicturesListViewModel: PicturesListViewModelType {
         }
     }
     
-    private func formatterPhotoToViewModel(_ photo: Photo) -> PicturesListCellViewModelType {
-        let vm = PicturesListCellViewModel(networkManager: networkManager)
-        vm.set(photo)
-        return vm
-    }
-    
     private func downloadImage(viewModel: PicturesListCellViewModelType, urlString: String) {
         guard let url = URL(string: urlString) else { return }
-        networkManager.downloadPhoto(url: url) { data in
+        networkManager.downloadPhoto(url: url) { [weak self] data in
+            self?.saveImage(urlPhoto: urlString, dataImage: data)
             viewModel.loadImage?(data)
         }
+    }
+    
+    private func saveImage(urlPhoto: String, dataImage: Data?) {
+        let index = photos.firstIndex { photo in
+            photo.urlPhoto == urlPhoto
+        }
+        guard let index = index else { return }
+        var photo = photos[index]
+        let date = Date()
+        photo.image = dataImage
+        if photo.uploadDate == nil {
+            photo.uploadDate = date
+        }
+        photos[index] = photo
     }
 }

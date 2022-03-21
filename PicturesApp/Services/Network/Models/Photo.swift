@@ -22,13 +22,19 @@ struct Photo: Decodable {
     let id: Int
     let size: PhotoSize
     let photographer: String
-    let alt: String
+    let description: String
     let width: Int
     let height: Int
     var uploadDate: Date?
+    var image: Data?
+    
+    var urlPhoto: String {
+        size.large
+    }
     
     enum CodingKeys: String, CodingKey {
-        case id, photographer, alt, width, height, uploadDate
+        case id, photographer, width, height, uploadDate, image
+        case description = "alt"
         case size = "src"
     }
 }

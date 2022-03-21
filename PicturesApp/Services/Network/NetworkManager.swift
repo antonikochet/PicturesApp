@@ -18,7 +18,7 @@ class NetworkManager: Networking {
         guard let url = createURL(params: parametrs) else { return }
         var request = URLRequest(url: url)
         request.addValue(API.key, forHTTPHeaderField: "Authorization")
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil else {
                 completion(nil, error!)
                 return

@@ -9,7 +9,7 @@ import UIKit
 
 protocol PicturesListViewModelType {
     var count: Int { get }
-    func getItem(by index: Int, viewModel: PicturesListCellViewModelType?) -> PicturesListCellViewModelType
+    func getItem(by index: Int) -> PicturesListCellViewModelType
     func fetchData()
     func getDetailItem(by index: Int) -> Photo
     var dataDidLoad: (() -> Void)? { get set }
@@ -59,7 +59,9 @@ class PicturesListViewController: UIViewController {
             }
         }
         viewModel.showError = { message in
-            print(message)
+            DispatchQueue.main.async {
+                self.showError(message: message)
+            }
         }
     }
 }
@@ -71,7 +73,7 @@ extension PicturesListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PicturesListCollectionViewCell.identifier, for: indexPath) as! PicturesListCollectionViewCell
-        cell.viewModel = viewModel.getItem(by: indexPath.row, viewModel: cell.viewModel)
+        cell.set(viewModel: viewModel.getItem(by: indexPath.row))
         return cell
     }
 }

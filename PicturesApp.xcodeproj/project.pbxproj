@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A524C0A827E8E03A00722907 /* extention + UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524C0A727E8E03A00722907 /* extention + UIAlertController.swift */; };
 		A54F9BD427DF69C800E49248 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54F9BD327DF69C800E49248 /* AppDelegate.swift */; };
 		A54F9BD627DF69C800E49248 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54F9BD527DF69C800E49248 /* SceneDelegate.swift */; };
 		A54F9BDE27DF69C800E49248 /* PicturesApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A54F9BDC27DF69C800E49248 /* PicturesApp.xcdatamodeld */; };
@@ -21,7 +22,7 @@
 		A5AA4CE627E748210070F1AC /* PicturesDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AA4CE527E748210070F1AC /* PicturesDetailViewController.swift */; };
 		A5AA4CE827E750060070F1AC /* PicturesDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AA4CE727E750060070F1AC /* PicturesDetailViewModel.swift */; };
 		A5CF873027E0E51B00EFCCB1 /* PicturesListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CF872F27E0E51B00EFCCB1 /* PicturesListCollectionViewCell.swift */; };
-		A5E4A98927E8A0C100864FBC /* PicturesListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E4A98827E8A0C100864FBC /* PicturesListCellViewModel.swift */; };
+		A5E4A98927E8A0C100864FBC /* PicturesListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E4A98827E8A0C100864FBC /* PicturesListCellModel.swift */; };
 		B2AA8F1F5AEFD5B41C6C5612 /* Pods_PicturesApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F8BDDA8C205EAEFD82B55AC /* Pods_PicturesApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		095A7B60BB9CD4760CB830A2 /* Pods-PicturesApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicturesApp.debug.xcconfig"; path = "Target Support Files/Pods-PicturesApp/Pods-PicturesApp.debug.xcconfig"; sourceTree = "<group>"; };
 		3F8BDDA8C205EAEFD82B55AC /* Pods_PicturesApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PicturesApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		54AA89CCB32F256E21E63E92 /* Pods-PicturesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PicturesApp.release.xcconfig"; path = "Target Support Files/Pods-PicturesApp/Pods-PicturesApp.release.xcconfig"; sourceTree = "<group>"; };
+		A524C0A727E8E03A00722907 /* extention + UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extention + UIAlertController.swift"; sourceTree = "<group>"; };
 		A54F9BD027DF69C800E49248 /* PicturesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicturesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A54F9BD327DF69C800E49248 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A54F9BD527DF69C800E49248 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,7 +47,7 @@
 		A5AA4CE527E748210070F1AC /* PicturesDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturesDetailViewController.swift; sourceTree = "<group>"; };
 		A5AA4CE727E750060070F1AC /* PicturesDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturesDetailViewModel.swift; sourceTree = "<group>"; };
 		A5CF872F27E0E51B00EFCCB1 /* PicturesListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturesListCollectionViewCell.swift; sourceTree = "<group>"; };
-		A5E4A98827E8A0C100864FBC /* PicturesListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturesListCellViewModel.swift; sourceTree = "<group>"; };
+		A5E4A98827E8A0C100864FBC /* PicturesListCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicturesListCellModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 		A54F9BD227DF69C800E49248 /* PicturesApp */ = {
 			isa = PBXGroup;
 			children = (
+				A5E4A98B27E8DFA400864FBC /* Helper */,
 				A5AA4CE427E747FD0070F1AC /* PicturesDetail */,
 				A54F9BEE27DF87F500E49248 /* PicturesList */,
 				A54F9BEA27DF6A2800E49248 /* Services */,
@@ -106,6 +109,7 @@
 		A54F9BEE27DF87F500E49248 /* PicturesList */ = {
 			isa = PBXGroup;
 			children = (
+				A5E4A98A27E8DE3500864FBC /* Model */,
 				A58B8EDA27E1DE2900F3E97D /* View */,
 				A58B8EDB27E1DE3100F3E97D /* ViewModel */,
 			);
@@ -125,7 +129,6 @@
 			isa = PBXGroup;
 			children = (
 				A59FB67427DFA47100C51D2B /* PicturesListViewModel.swift */,
-				A5E4A98827E8A0C100864FBC /* PicturesListCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -155,6 +158,22 @@
 				A5AA4CE727E750060070F1AC /* PicturesDetailViewModel.swift */,
 			);
 			path = PicturesDetail;
+			sourceTree = "<group>";
+		};
+		A5E4A98A27E8DE3500864FBC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A5E4A98827E8A0C100864FBC /* PicturesListCellModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A5E4A98B27E8DFA400864FBC /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				A524C0A727E8E03A00722907 /* extention + UIAlertController.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		B43EAFB648DDE5E472035C2E /* Pods */ = {
@@ -294,7 +313,8 @@
 				A59FB67B27DFEF8A00C51D2B /* Photo.swift in Sources */,
 				A54F9BF027DF882800E49248 /* PicturesListViewController.swift in Sources */,
 				A54F9BDE27DF69C800E49248 /* PicturesApp.xcdatamodeld in Sources */,
-				A5E4A98927E8A0C100864FBC /* PicturesListCellViewModel.swift in Sources */,
+				A5E4A98927E8A0C100864FBC /* PicturesListCellModel.swift in Sources */,
+				A524C0A827E8E03A00722907 /* extention + UIAlertController.swift in Sources */,
 				A59FB67527DFA47100C51D2B /* PicturesListViewModel.swift in Sources */,
 				A5AA4CE327E747AB0070F1AC /* AppAssembly.swift in Sources */,
 				A54F9BD427DF69C800E49248 /* AppDelegate.swift in Sources */,

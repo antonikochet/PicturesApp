@@ -18,6 +18,7 @@ protocol PicturesDetailViewModelType {
     var photographer: String { get }
     var description: String? { get }
     var dateLoad: String { get }
+    var image: Data? { get }
 }
 
 class PicturesDetailViewController: UIViewController {

@@ -22,6 +22,7 @@ class PicturesDetailViewModel: PicturesDetailViewModelType {
     var photographer: String = ""
     var dateLoad: String = ""
     var description: String? = ""
+    var image: Data?
     
     //MARK: - private property
     private var photo: Photo
@@ -42,18 +43,24 @@ class PicturesDetailViewModel: PicturesDetailViewModelType {
     }
     
     private func formatterViewModel() {
-        loadImageStart?()
         height = photo.height
         width = photo.width
         photographer = "By \(photo.photographer)"
-        dateLoad = "Upload date: - "
-        description = photo.alt.isEmpty ? nil : "Description: \(photo.alt)"
+        description = photo.description.isEmpty ? nil : "Description: \(photo.description)"
+        if let image = photo.image,
+           let date = photo.uploadDate {
+            dateLoad = "Upload date: \(dateFormatter.string(from: date))"
+            loadImage?(image)
+        } else {
+            loadImageStart?()
+            dateLoad = "Upload date: - "
+            downloadPhoto()
+        }
         dataDidLoad?(self)
-        downloadPhoto()
     }
     
     private func downloadPhoto() {
-        guard let url = URL(string: photo.size.large) else { return }
+        guard let url = URL(string: photo.urlPhoto) else { return }
         networkManager.downloadPhoto(url: url) { [weak self] data in
             let date = Date()
             self?.dateLoad = "Upload date: \(self?.dateFormatter.string(from: date) ?? "")"

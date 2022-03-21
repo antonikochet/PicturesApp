@@ -11,7 +11,7 @@ protocol PicturesListCellViewModelType {
     var photographer: String { get }
     var description: String? { get }
     var loadImage: ((Data?) -> Void)? { get set }
-    var startLoadImage: (() -> Void)? { get }
+    var startLoadImage: ((PicturesListCellViewModelType) -> Void)? { get set }
 }
 
 class PicturesListCollectionViewCell: UICollectionViewCell {
@@ -19,17 +19,7 @@ class PicturesListCollectionViewCell: UICollectionViewCell {
     static let identifier = "PicturesListCollectionViewCell"
     
     private static let photographerFont: UIFont = UIFont.systemFont(ofSize: 16, weight: .semibold)
-    var viewModel: PicturesListCellViewModelType? {
-        didSet {
-            self.viewModel?.loadImage = { [weak self] data in
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    self?.pictureImageView.image = UIImage(data: data)
-                }
-            }
-            set()
-        }
-    }
+    private var viewModel: PicturesListCellViewModelType?
     
     private let pictureImageView: UIImageView = {
         let image = UIImageView()
@@ -111,15 +101,24 @@ class PicturesListCollectionViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
+        viewModel = nil
         pictureImageView.image = nil
         photographerLabel.text = ""
         descriptionLabel.text = ""
     }
     
-    func set() {
-        self.viewModel?.startLoadImage?()
-        photographerLabel.text = viewModel?.photographer
-        if let description = viewModel?.description,
+    func set( viewModel: PicturesListCellViewModelType) {
+        self.viewModel = viewModel
+        self.viewModel?.loadImage = { [weak self] data in
+            guard let data = data else { return }
+            DispatchQueue.main.async {
+                self?.pictureImageView.image = UIImage(data: data)
+            }
+        }
+        viewModel.startLoadImage?(viewModel)
+        photographerLabel.text = viewModel.photographer
+        if let description = viewModel.description,
            !description.isEmpty {
             descriptionLabel.text = description
         }
