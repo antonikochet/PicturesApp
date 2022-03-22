@@ -34,6 +34,7 @@ class PicturesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Photos"
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self

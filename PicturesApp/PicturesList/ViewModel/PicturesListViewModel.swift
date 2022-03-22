@@ -14,8 +14,10 @@ class PicturesListViewModel: PicturesListViewModelType {
     }
     
     func fetchData() {
-        page += 1
-        fetchPhotos()
+        if isConnectInternet {
+            page += 1
+            fetchPhotos()
+        }
     }
     
     func getItem(by index: Int) -> PicturesListCellViewModelType {
@@ -42,9 +44,12 @@ class PicturesListViewModel: PicturesListViewModelType {
     
     private var photos: [Photo] = []
     private var networkManager: Networking
+    private var dataStorageManager: DataStorage
+    private var isConnectInternet: Bool = true
     
-    init(networkManager: Networking = NetworkManager()) {
+    init(networkManager: Networking = NetworkManager(), dataStorageManager: DataStorage = DataStorageManager()) {
         self.networkManager = networkManager
+        self.dataStorageManager = dataStorageManager
     }
     
     private func fetchPhotos() {
@@ -54,7 +59,17 @@ class PicturesListViewModel: PicturesListViewModelType {
         networkManager.request(parametrs: params) { [weak self] data, error in
             guard let self = self else { return }
             guard error == nil else {
-                self.showError?(error!.localizedDescription)
+                if let urlError = error as? URLError,
+                   urlError.code == URLError.notConnectedToInternet {
+                    self.isConnectInternet = false
+                    self.showError?(error!.localizedDescription)
+                    self.dataStorageManager.getAllData { [weak self] photos in
+                        self?.photos = photos
+                        self?.dataDidLoad?()
+                    }
+                } else {
+                    self.showError?(error!.localizedDescription)
+                }
                 return
             }
             if let data = data {
@@ -86,5 +101,6 @@ class PicturesListViewModel: PicturesListViewModelType {
             photo.uploadDate = date
         }
         photos[index] = photo
+        dataStorageManager.saveData(photo)
     }
 }
