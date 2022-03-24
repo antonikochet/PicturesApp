@@ -19,9 +19,9 @@ Architecture - MVVM
 
 App screens:
 
- - Photos screen
+ - Photos screen  
 ![photos](screenshots/photosScreen.gif)
- - Detail photo screen
+ - Detail photo screen  
 ![detail photo](screenshots/detailPhotoScreen.gif)
- - offline mode
+ - offline mode  
 ![offline mode](screenshots/offlineMode.gif)
