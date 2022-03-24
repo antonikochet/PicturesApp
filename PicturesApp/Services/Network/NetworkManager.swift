@@ -8,15 +8,17 @@
 import Foundation
 
 typealias Parametrs = [String: String]
+
 protocol Networking {
     func request(parametrs: Parametrs, completion: @escaping (Data?, Error?) -> Void)
-    func downloadPhoto(url: URL?, completion: @escaping (Data?) -> Void)
+    func downloadPhoto(urlPhoto: String?, completion: @escaping (Data?) -> Void)
 }
 
 class NetworkManager: Networking {
     func request(parametrs: Parametrs, completion: @escaping (Data?, Error?) -> Void) {
         guard let url = createURL(params: parametrs) else { return }
         var request = URLRequest(url: url)
+        request.timeoutInterval = 5
         request.addValue(API.key, forHTTPHeaderField: "Authorization")
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil else {
@@ -32,8 +34,9 @@ class NetworkManager: Networking {
         task.resume()
     }
     
-    func downloadPhoto(url: URL?, completion: @escaping (Data?) -> Void) {
-        guard let url = url else { return }
+    func downloadPhoto(urlPhoto: String?, completion: @escaping (Data?) -> Void) {
+        guard let urlPhoto = urlPhoto,
+              let url = URL(string: urlPhoto) else { return }
         
         if let cachedResponse = URLCache.shared.cachedResponse(for: URLRequest(url: url)) {
             completion(cachedResponse.data)

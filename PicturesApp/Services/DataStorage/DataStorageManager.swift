@@ -17,11 +17,7 @@ class DataStorageManager: DataStorage {
     // MARK: - Core Data stack
 
     private static let maxSavePicture: Int = 100
-    private var countPicturesInBD: Int = 0 {
-        didSet {
-            print("count in BD: \(countPicturesInBD)")
-        }
-    }
+    private var countPicturesInBD: Int = 0 
     
     private var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "PicturesApp")
@@ -64,7 +60,7 @@ class DataStorageManager: DataStorage {
     
     private func deleteLastData() {
         let fetchAddedDateRequest = Picture.fetchRequest()
-        fetchAddedDateRequest.sortDescriptors = [NSSortDescriptor(key: "addedDate", ascending: false)]
+        fetchAddedDateRequest.sortDescriptors = [NSSortDescriptor(key: "addedDate", ascending: true)]
         fetchAddedDateRequest.fetchLimit = 1
         guard let lastPicture = try? viewContext.fetch(fetchAddedDateRequest).first else { return }
         viewContext.delete(lastPicture)

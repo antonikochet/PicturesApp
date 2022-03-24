@@ -14,6 +14,7 @@ protocol PicturesListViewModelType {
     func getDetailItem(by index: Int) -> Photo
     var dataDidLoad: (() -> Void)? { get set }
     var showError: ((String) -> Void)? { get set }
+    func refreshData()
 }
 
 class PicturesListViewController: UIViewController {
@@ -24,9 +25,16 @@ class PicturesListViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collView.backgroundColor = .white
         collView.register(PicturesListCollectionViewCell.self,
                           forCellWithReuseIdentifier: PicturesListCollectionViewCell.identifier)
         return collView
+    }()
+    
+    private let refreshControl: UIRefreshControl = {
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(refreshCollection), for: .valueChanged)
+        return refresh
     }()
     
     private let itemsPerRow: CGFloat = 2
@@ -38,6 +46,7 @@ class PicturesListViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.refreshControl = refreshControl
         updateView()
         viewModel.fetchData()
     }
@@ -57,6 +66,7 @@ class PicturesListViewController: UIViewController {
         viewModel.dataDidLoad = {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
+                self.refreshControl.endRefreshing()
             }
         }
         viewModel.showError = { message in
@@ -64,6 +74,11 @@ class PicturesListViewController: UIViewController {
                 self.showError(message: message)
             }
         }
+    }
+    
+    @objc
+    private func refreshCollection() {
+        viewModel.refreshData()
     }
 }
 

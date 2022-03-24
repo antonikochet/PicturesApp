@@ -21,6 +21,7 @@ class PicturesListViewModel: PicturesListViewModelType {
     }
     
     func getItem(by index: Int) -> PicturesListCellViewModelType {
+        guard photos.count >= index else { return PicturesListCellModel(photographer: "", description: nil) }
         let photo = photos[index]
         let localViewModel = PicturesListCellModel(photographer: photo.photographer,
                                                        description: photo.description)
@@ -37,6 +38,13 @@ class PicturesListViewModel: PicturesListViewModelType {
     var dataDidLoad: (() -> Void)?
     
     var showError: ((String) -> Void)?
+    
+    func refreshData() {
+        photos = []
+        page = 0
+        isConnectInternet = true
+        fetchData()
+    }
     
     //MARK: - private property
     private var page: Int = 0
@@ -60,12 +68,17 @@ class PicturesListViewModel: PicturesListViewModelType {
             guard let self = self else { return }
             guard error == nil else {
                 if let urlError = error as? URLError,
-                   urlError.code == URLError.notConnectedToInternet {
+                   (urlError.code == URLError.notConnectedToInternet ||
+                    urlError.code == URLError.timedOut){
                     self.isConnectInternet = false
                     self.showError?(error!.localizedDescription)
                     self.dataStorageManager.getAllData { [weak self] photos in
-                        self?.photos = photos
-                        self?.dataDidLoad?()
+                        if !photos.isEmpty {
+                            self?.photos = photos
+                            self?.dataDidLoad?()
+                        } else {
+                            self?.showError?("No photos saved")
+                        }
                     }
                 } else {
                     self.showError?(error!.localizedDescription)
@@ -82,8 +95,7 @@ class PicturesListViewModel: PicturesListViewModelType {
     }
     
     private func downloadImage(viewModel: PicturesListCellViewModelType, urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        networkManager.downloadPhoto(url: url) { [weak self] data in
+        networkManager.downloadPhoto(urlPhoto: urlString) { [weak self] data in
             self?.saveImage(urlPhoto: urlString, dataImage: data)
             viewModel.loadImage?(data)
         }

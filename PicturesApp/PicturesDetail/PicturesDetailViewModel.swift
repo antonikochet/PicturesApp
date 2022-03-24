@@ -60,8 +60,7 @@ class PicturesDetailViewModel: PicturesDetailViewModelType {
     }
     
     private func downloadPhoto() {
-        guard let url = URL(string: photo.urlPhoto) else { return }
-        networkManager.downloadPhoto(url: url) { [weak self] data in
+        networkManager.downloadPhoto(urlPhoto: photo.urlPhoto) { [weak self] data in
             let date = Date()
             self?.dateLoad = "Upload date: \(self?.dateFormatter.string(from: date) ?? "")"
             self?.loadImage?(data)
